@@ -1346,11 +1346,13 @@ namespace Lawn
             return newProjectile;
         }
 
+        public event Action<Board> OnCoinAdd = _ => { };
         public Coin AddCoin(int theX, int theY, CoinType theCoinType, CoinMotion theCoinMotion)
         {
             Coin coin = new Coin();
             coin.CoinInitialize(theX, theY, theCoinType, theCoinMotion);
             mCoins.Add(coin);
+            OnCoinAdd(this);
             if (mApp.IsFirstTimeAdventureMode() && mLevel == 1)
             {
                 DisplayAdvice("[ADVICE_CLICK_ON_SUN]", MessageStyle.TutorialLevel1Stay, AdviceType.ClickOnSun);
@@ -3249,7 +3251,7 @@ namespace Lawn
                 break;
             }
             GameMode aGameMode = mApp.mGameMode;
-            if (mLevel == 1 && mApp.IsFirstTimeAdventureMode())
+            if (mPlantRow is [PlantRowType.Dirt, PlantRowType.Dirt, PlantRowType.Normal, PlantRowType.Dirt, PlantRowType.Dirt, PlantRowType.Dirt])
             {
                 g.DrawImage(Resources.IMAGE_BACKGROUND1UNSODDED, -(Constants.BOARD_OFFSET * Constants.S), 0f);
                 int theWidth = TodCommon.TodAnimateCurve(0, /*950*/1000, mSodPosition, 0, AtlasResources.IMAGE_SOD1ROW.GetWidth(), TodCurves.Linear);
