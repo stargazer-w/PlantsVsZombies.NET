@@ -422,7 +422,14 @@ namespace Lawn
             if (mApp.mGameMode == GameMode.Intro)
             {
                 mCutsceneTime += 10;
-                UpdateIntro();
+                if (mCutsceneTime < TimeIntro_End)
+                {
+                    UpdateIntro();
+                }
+                else
+                {
+                    mApp.PreNewGame(GameMode.Adventure, false);
+                }
                 return;
             }
             if (!flag)
@@ -1968,73 +1975,69 @@ namespace Lawn
         public void UpdateIntro()
         {
             int num = TodCommon.TodAnimateCurve(CutScene.TimeIntro_PanRightStart, CutScene.TimeIntro_PanRightEnd, mCutsceneTime, -100, 100, TodCurves.Linear);
-            mBoard.Move((int)((float)(-num) * Constants.S), 0);
-            if (mCutsceneTime == 10)
+            mBoard.Move((int)(-num * Constants.S), 0);
+
+            switch (mCutsceneTime)
             {
+            case 10:
                 LoadIntroBoard();
-            }
-            if (mCutsceneTime == CutScene.TimeIntro_FadeOut)
-            {
-                mApp.mMusic.FadeOut(250);
-            }
-            if (mCutsceneTime == CutScene.TimeIntro_LogoEnd)
-            {
+                break;
+            case TimeIntro_LogoEnd:
                 mApp.AddTodParticle(Constants.CutScene_LogoEnd_Particle_Pos.X, Constants.CutScene_LogoEnd_Particle_Pos.Y, 400000, ParticleEffect.ScreenFlash);
                 mApp.mMuteSoundsForCutscene = false;
                 mApp.PlaySample(Resources.SOUND_HUGE_WAVE);
                 mApp.mMuteSoundsForCutscene = true;
-            }
-            if (mCutsceneTime == CutScene.TimeIntro_FadeOut - 200)
-            {
+                break;
+            case TimeIntro_FadeOut - 200:
                 mApp.mMuteSoundsForCutscene = false;
                 mApp.PlaySample(Resources.SOUND_SIREN);
                 mApp.mMuteSoundsForCutscene = true;
-            }
-            if (mCutsceneTime == CutScene.TimeIntro_End)
-            {
-                mApp.PreNewGame(GameMode.Adventure, false);
+                break;
+            case TimeIntro_FadeOut:
+                mApp.mMusic.FadeOut(250);
+                break;
             }
         }
 
-        internal static int TimePanRightStart = 1500;
+        internal const int TimePanRightStart = 1500;
 
-        internal static int TimePanRightEnd = CutScene.TimePanRightStart + 2000;
+        internal const int TimePanRightEnd = CutScene.TimePanRightStart + 2000;
 
-        internal static int TimeEarlyDaveEnterStart = CutScene.TimePanRightStart + 500;
+        internal const int TimeEarlyDaveEnterStart = CutScene.TimePanRightStart + 500;
 
-        internal static int TimeEarlyDaveEnterEnd = CutScene.TimeEarlyDaveEnterStart + 750;
+        internal const int TimeEarlyDaveEnterEnd = CutScene.TimeEarlyDaveEnterStart + 750;
 
-        internal static int TimeEarlyDaveLeaveStart = CutScene.TimeEarlyDaveEnterEnd + 500;
+        internal const int TimeEarlyDaveLeaveStart = CutScene.TimeEarlyDaveEnterEnd + 500;
 
-        internal static int TimeEarlyDaveLeaveEnd = CutScene.TimeEarlyDaveLeaveStart + 750;
+        internal const int TimeEarlyDaveLeaveEnd = CutScene.TimeEarlyDaveLeaveStart + 750;
 
-        internal static int TimeSeedChoserSlideOnStart = CutScene.TimePanRightEnd + 500;
+        internal const int TimeSeedChoserSlideOnStart = CutScene.TimePanRightEnd + 500;
 
-        internal static int TimeSeedChoserSlideOnEnd = CutScene.TimeSeedChoserSlideOnStart + 250;
+        internal const int TimeSeedChoserSlideOnEnd = CutScene.TimeSeedChoserSlideOnStart + 250;
 
-        internal static int TimeSeedChoserSlideOffStart = CutScene.TimeSeedChoserSlideOnEnd + 250;
+        internal const int TimeSeedChoserSlideOffStart = CutScene.TimeSeedChoserSlideOnEnd + 250;
 
-        internal static int TimeSeedChoserSlideOffEnd = CutScene.TimeSeedChoserSlideOffStart + 250;
+        internal const int TimeSeedChoserSlideOffEnd = CutScene.TimeSeedChoserSlideOffStart + 250;
 
-        internal static int TimeSeedBankOnStart = CutScene.TimeSeedChoserSlideOnStart;
+        internal const int TimeSeedBankOnStart = CutScene.TimeSeedChoserSlideOnStart;
 
-        internal static int TimeSeedBankOnEnd = CutScene.TimeSeedChoserSlideOnEnd;
+        internal const int TimeSeedBankOnEnd = CutScene.TimeSeedChoserSlideOnEnd;
 
-        internal static int TimePanLeftStart = CutScene.TimeSeedChoserSlideOffStart;
+        internal const int TimePanLeftStart = CutScene.TimeSeedChoserSlideOffStart;
 
-        internal static int TimePanLeftEnd = CutScene.TimePanLeftStart + 1500;
+        internal const int TimePanLeftEnd = CutScene.TimePanLeftStart + 1500;
 
-        internal static int TimeSeedBankRightStart = CutScene.TimeSeedChoserSlideOffEnd;
+        internal const int TimeSeedBankRightStart = CutScene.TimeSeedChoserSlideOffEnd;
 
-        internal static int TimeSeedBankRightEnd = CutScene.TimePanLeftEnd;
+        internal const int TimeSeedBankRightEnd = CutScene.TimePanLeftEnd;
 
-        internal static int TimeRollSodStart = CutScene.TimePanLeftEnd;
+        internal const int TimeRollSodStart = CutScene.TimePanLeftEnd;
 
-        internal static int TimeRollSodEnd = CutScene.TimeRollSodStart + 2000;
+        internal const int TimeRollSodEnd = CutScene.TimeRollSodStart + 2000;
 
-        internal static int TimeGraveStoneStart = CutScene.TimePanLeftEnd;
+        internal const int TimeGraveStoneStart = CutScene.TimePanLeftEnd;
 
-        internal static int TimeGraveStoneEnd = CutScene.TimeRollSodStart + 1000;
+        internal const int TimeGraveStoneEnd = CutScene.TimeRollSodStart + 1000;
 
         internal static int[] TimeLawnMowerStart = new int[]
         {
@@ -2046,53 +2049,53 @@ namespace Lawn
             CutScene.TimePanLeftEnd + 50
         };
 
-        internal static int TimeLawnMowerDuration = 250;
+        internal const int TimeLawnMowerDuration = 250;
 
-        internal static int TimeReadySetPlantStart = CutScene.TimePanLeftEnd;
+        internal const int TimeReadySetPlantStart = CutScene.TimePanLeftEnd;
 
-        internal static int TimeReadySetPlantEnd = CutScene.TimeReadySetPlantStart + 1830;
+        internal const int TimeReadySetPlantEnd = CutScene.TimeReadySetPlantStart + 1830;
 
-        internal static int TimeFogRollIn = CutScene.TimePanLeftEnd - 50;
+        internal const int TimeFogRollIn = CutScene.TimePanLeftEnd - 50;
 
-        internal static int TimeCrazyDaveEnterStart = CutScene.TimePanLeftEnd + 500;
+        internal const int TimeCrazyDaveEnterStart = CutScene.TimePanLeftEnd + 500;
 
-        internal static int TimeCrazyDaveEnterEnd = CutScene.TimeCrazyDaveEnterStart + 750;
+        internal const int TimeCrazyDaveEnterEnd = CutScene.TimeCrazyDaveEnterStart + 750;
 
-        internal static int TimeCrazyDaveLeaveStart = CutScene.TimeCrazyDaveEnterEnd + 500;
+        internal const int TimeCrazyDaveLeaveStart = CutScene.TimeCrazyDaveEnterEnd + 500;
 
-        internal static int TimeCrazyDaveLeaveEnd = CutScene.TimeCrazyDaveLeaveStart + 750;
+        internal const int TimeCrazyDaveLeaveEnd = CutScene.TimeCrazyDaveLeaveStart + 750;
 
-        internal static int TimeIntroEnd = CutScene.TimeReadySetPlantStart;
+        internal const int TimeIntroEnd = CutScene.TimeReadySetPlantStart;
 
-        internal static int LostTimePanRightStart = 1500;
+        internal const int LostTimePanRightStart = 1500;
 
-        internal static int LostTimePanRightEnd = CutScene.TimePanRightStart + 2000;
+        internal const int LostTimePanRightEnd = CutScene.TimePanRightStart + 2000;
 
-        internal static int LostTimeBrainGraphicStart = CutScene.LostTimePanRightEnd + 3500;
+        internal const int LostTimeBrainGraphicStart = CutScene.LostTimePanRightEnd + 3500;
 
-        internal static int LostTimeBrainGraphicShake = CutScene.LostTimeBrainGraphicStart + 1000;
+        internal const int LostTimeBrainGraphicShake = CutScene.LostTimeBrainGraphicStart + 1000;
 
-        internal static int LostTimeBrainGraphicCancelShake = CutScene.LostTimeBrainGraphicShake + 1000;
+        internal const int LostTimeBrainGraphicCancelShake = CutScene.LostTimeBrainGraphicShake + 1000;
 
-        internal static int LostTimeBrainGraphicEnd = CutScene.LostTimeBrainGraphicCancelShake + 3000;
+        internal const int LostTimeBrainGraphicEnd = CutScene.LostTimeBrainGraphicCancelShake + 3000;
 
-        internal static int LostTimeEnd = CutScene.LostTimeBrainGraphicEnd;
+        internal const int LostTimeEnd = CutScene.LostTimeBrainGraphicEnd;
 
-        internal static int TimeIntro_PresentsFadeIn = 1000;
+        internal const int TimeIntro_PresentsFadeIn = 1000;
 
-        internal static int TimeIntro_LogoStart = CutScene.TimeIntro_PresentsFadeIn + 4500;
+        internal const int TimeIntro_LogoStart = CutScene.TimeIntro_PresentsFadeIn + 4500;
 
-        internal static int TimeIntro_LogoEnd = CutScene.TimeIntro_LogoStart + 400;
+        internal const int TimeIntro_LogoEnd = CutScene.TimeIntro_LogoStart + 400;
 
-        internal static int TimeIntro_PanRightStart = CutScene.TimeIntro_PresentsFadeIn + 4890;
+        internal const int TimeIntro_PanRightStart = CutScene.TimeIntro_PresentsFadeIn + 4890;
 
-        internal static int TimeIntro_PanRightEnd = CutScene.TimeIntro_PanRightStart + 6000;
+        internal const int TimeIntro_PanRightEnd = CutScene.TimeIntro_PanRightStart + 6000;
 
-        internal static int TimeIntro_FadeOut = CutScene.TimeIntro_PanRightStart + 5000;
+        internal const int TimeIntro_FadeOut = CutScene.TimeIntro_PanRightStart + 5000;
 
-        internal static int TimeIntro_FadeOutEnd = CutScene.TimeIntro_FadeOut + 1000;
+        internal const int TimeIntro_FadeOutEnd = CutScene.TimeIntro_FadeOut + 1000;
 
-        internal static int TimeIntro_End = CutScene.TimeIntro_FadeOutEnd + 2000;
+        internal const int TimeIntro_End = CutScene.TimeIntro_FadeOutEnd + 2000;
 
         public LawnApp mApp;
 

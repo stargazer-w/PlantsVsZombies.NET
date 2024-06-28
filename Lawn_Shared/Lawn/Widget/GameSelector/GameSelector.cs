@@ -142,7 +142,7 @@ namespace Lawn
             SetupUnlockFullGameReanim();
             //if (SexyAppBase.IsInTrialMode)
             //{
-                AddWidget(mUserDialogButton);
+            AddWidget(mUserDialogButton);
             //}
             mLeafCounter = 50;
             mSignState = SelectorSignState.Up;
@@ -156,9 +156,9 @@ namespace Lawn
         {
             //if (SexyAppBase.IsInTrialMode)
             //{
-                mWoodSignReanimID.AssignRenderGroupToPrefix("short rope1", -1);
-                mWoodSignReanimID.AssignRenderGroupToPrefix("short rope2", -1);
-                return;
+            mWoodSignReanimID.AssignRenderGroupToPrefix("short rope1", -1);
+            mWoodSignReanimID.AssignRenderGroupToPrefix("short rope2", -1);
+            return;
             //}
             //mWoodSignReanimID.AssignRenderGroupToPrefix("long rope1", -1);
             //mWoodSignReanimID.AssignRenderGroupToPrefix("long rope2", -1);
@@ -581,6 +581,10 @@ namespace Lawn
             mApp.PlaySample(Resources.SOUND_TAP);
         }
 
+        /// <summary>
+        /// 按钮事件处理
+        /// </summary>
+        /// <param name="theId"></param>
         public virtual void ButtonDepress(int theId)
         {
             if (mApp.mPlayerInfo == null)
@@ -865,6 +869,9 @@ namespace Lawn
         {
         }
 
+        /// <summary>
+        /// 冒险模式
+        /// </summary>
         public void ClickedAdventure()
         {
             mApp.mMusic.StopAllMusic();
@@ -878,11 +885,7 @@ namespace Lawn
             mMoreGamesButton.SetDisabled(true);
             mAchievementsButton.SetDisabled(true);
             mApp.KillGameSelector();
-            if (mApp.IsIceDemo())
-            {
-                mApp.PreNewGame(GameMode.ChallengeIce, false);
-                return;
-            }
+
             if (mApp.IsFirstTimeAdventureMode() && mLevel == 1 && !mApp.SaveFileExists())
             {
                 mApp.PreNewGame(GameMode.Intro, false);
@@ -899,6 +902,11 @@ namespace Lawn
             {
                 mApp.PreNewGame(GameMode.ChallengeZenGarden, false);
                 mApp.mZenGarden.SetupForZenTutorial();
+                return;
+            }
+            if (mApp.IsIceDemo())
+            {
+                mApp.PreNewGame(GameMode.ChallengeIce, false);
                 return;
             }
             mApp.PreNewGame(GameMode.Adventure, true);
@@ -976,7 +984,7 @@ namespace Lawn
                 mMiniGamesScrollWidget.ScrollToMin(false);
                 mMiniGamesScrollWidget.Move(mMiniGamesScrollWidget.mX, 10);
             }
-            if (!theDoFadeIn) 
+            if (!theDoFadeIn)
             {
                 mMiniGamesWidget.RecoverLastPlayedMode();
             }
@@ -1097,7 +1105,7 @@ namespace Lawn
         public int mSelectedQuickplayButtonId;
 
         public MoreGamesListWidget mMoreGamesListWidget;
-        
+
         public ScrollWidget mMoreGamesScrollWidget;
 
         public string mLexText = string.Empty;
@@ -1173,7 +1181,7 @@ namespace Lawn
         public int mQuickplaySlideCounter;
 
         public bool mRetractingQuickplay;
-        
+
 
         private enum GameSelectorScreenState
         {
